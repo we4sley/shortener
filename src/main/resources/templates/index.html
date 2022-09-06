@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>단축 URL</title>
+</head>
+<script>
+    function shorten() {
+        fetch("http://localhost:8080/api/shorten", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                originUrl: document.getElementById('inputOriginUrl').value,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => document.getElementById('shortUrl').innerHTML=data.url);
+    }
+
+    function getOriginUrl() {
+        fetch("http://localhost:8080/api/origin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                shortUrl: document.getElementById('inputShortUrl').value,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => document.getElementById('originUrl').innerHTML=data.url);
+    }
+</script>
+<body>
+<h1>단축 URL</h1>
+<br>
+<input type="text" id="inputOriginUrl">
+<input type="button" value="generate" onclick="shorten()">
+<br>
+<div id="shortUrl"></div>
+<hr>
+<h1>원래 URL</h1>
+<br>
+<input type="text" id="inputShortUrl">
+<input type="button" value="revert" onclick="getOriginUrl()">
+<br>
+<div id="originUrl"></div>
+</body>
+</html>
